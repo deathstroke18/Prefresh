@@ -29,10 +29,10 @@ workspace "Prefresh"
   project "PrefreshRuntime"
     kind "ConsoleApp"
     -- recursively glob .h and .cpp files in the runtime directory
-    files { "runtime/**.h", "runtime/**.cpp" }
+    files { "runtime/**.h", "runtime/**.cpp", "test/pub/*.h" }
     -- link the Prefresh library at runtime
     links { "Prefresh" }
-    includedirs { "lib/pub" }
+    includedirs { "lib/pub", "test/pub" }
     -- Ensure it looks for the shared library in the correct directory
     libdirs { "bin/%{cfg.buildcfg}" }
 

@@ -1,10 +1,9 @@
-#include "pub/Test.h"
-#include <cstdio>
+#include <iostream>
 
-void foo()
-{
-	printf("Hi ,\n");
+extern "C" {
+    void foo() {
+        std::cout << "foo called! brufgdv" << std::endl;
+    }
 
+    int bar = 52; // Example variable
 }
-
-int bar = 150;
