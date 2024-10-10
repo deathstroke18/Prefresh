@@ -24,9 +24,13 @@ Makefile
 
 # Build directories
 build/
-bin/
+bin/*
 Debug/
-Release/
+Release/*
+!Release/*.so
+!Release/*.a
+!Release/*.exe
+# You can add more file types if needed
 
 # IDE specific files
 .vs/
