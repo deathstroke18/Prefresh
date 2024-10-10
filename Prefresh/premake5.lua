@@ -1,41 +1,39 @@
 workspace "Prefresh"
-  configurations {"Debug", "Release"}
-  -- Use C++ as the target language for all builds
-  language "C++"
-  targetdir "bin/%{cfg.buildcfg}"
+    configurations { "Debug", "Release" }
+    language "C++"
+    targetdir "bin/%{cfg.buildcfg}"
 
-  -- Get that C++14 goodness
-  flags { "C++14" }
+    -- Use C++14 for the project
+    cppdialect "C++14"
 
-  filter "configurations:Debug"
-    -- Add the preprocessor definition DEBUG to debug builds
-    defines { "DEBUG" }
-    -- Ensure symbols are bundled with debug builds
-    flags { "Symbols" }
+    filter "configurations:Debug"
+        defines { "DEBUG" }
+        symbols "On"  -- Enable debug symbols
 
-  filter "configurations:Release"
-    -- Add the preprocessor definition RELEASE to debug builds
-    defines { "RELEASE" }
-    -- Turn on compiler optimizations for release builds
-    optimize "On"
+    filter "configurations:Release"
+        defines { "RELEASE" }
+        optimize "On"  -- Enable optimizations
 
-  -- Prefresh Library
-  project "Prefresh"
-    kind "SharedLib"
-    -- recursively glob .h and .cpp files in the lib directory
-    files { "lib/**.h", "lib/**.cpp" }
+    -- Prefresh Library
+    project "Prefresh"
+        kind "SharedLib"
+        files { "lib/**.h", "lib/**.cpp" }
 
-  -- Prefresh Runtime
-  project "PrefreshRuntime"
-    kind "ConsoleApp"
-    -- recursively glob .h and .cpp files in the runtime directory
-    files { "runtime/**.h", "runtime/**.cpp", "test/pub/*.h" }
-    -- link the Prefresh library at runtime
-    links { "Prefresh" }
-    includedirs { "lib/pub", "test/pub" }
-    -- Ensure it looks for the shared library in the correct directory
-    libdirs { "bin/%{cfg.buildcfg}" }
+    -- Prefresh Runtime
+    project "PrefreshRuntime"
+        kind "ConsoleApp"
+        files { "runtime/**.h", "runtime/**.cpp", "test/pub/*.h" }
+        links { "Prefresh", "GoogleTest" }
+        includedirs { "lib/pub", "test/pub", "googletest/googletest/include" }
+        libdirs { "bin/%{cfg.buildcfg}" }
 
-  project "PrefreshTest"
-    kind "SharedLib"
-    files {"test/**.h", "test/**.cpp", "test/pub/*.h"}
+    -- Prefresh Test
+    project "PrefreshTest"
+        kind "SharedLib"
+        files { "test/**.h", "test/**.cpp", "test/pub/*.h" }
+
+    -- GoogleTest Project
+    project "GoogleTest"
+        kind "StaticLib"
+        files { "googletest/googletest/src/gtest-all.cc" }
+        includedirs { "googletest/googletest/include", "googletest/googletest" }

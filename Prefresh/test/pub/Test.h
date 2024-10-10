@@ -36,7 +36,7 @@ protected:
     virtual const char* GetPath() const override
     {
 #ifdef DEBUG
-        return "bin/Debug/libPrefreshTest.so"; // Corrected to .so if you are on Linux
+        return "bin/Debug/libPrefreshTest.so"; // Ensure paths are correct
 #else
         return "bin/Release/libPrefreshTest.so";
 #endif
